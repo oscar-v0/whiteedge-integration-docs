@@ -50,8 +50,11 @@ Note: it's also important that your API implementation correctly manages session
 
 ```ts
 {
-  // Transaction ID (this will be used for subsequent requests)
-  transactionId: string,
+  // The type of transaction that is being performed
+  type: "deposit" | "withdrawal",
+
+  // Text extracted from the scanned QR code
+  qrCodeText: string,
 
   // A more user friendly transaction ID that can be displayed to the customer
   // This will also be displayed to the customer on the terminal
@@ -60,21 +63,19 @@ Note: it's also important that your API implementation correctly manages session
   // ID & Serial ID of the terminal that is being used for the transaction
   terminalId: string,
   terminalSid: string,
-
-  // The type of transaction that is being performed
-  type: "deposit" | "withdrawal",
-
-  // Text extracted from the scanned QR code
-  qrCodeText: string,
 }
 ```
 
 **200 Response**
 
-The response body can optionally include customer information. If provided, customer information will be stored on WhitEdge servers. This gives you the ability to filter transactions by customer on the WhiteEdge Amin Portal. The minimum required to allow filtering is to provide `id`, `email` and/or `mobile`.
+The response must include a unique `transactionId`. This id will be used for subsequent requests concerning this transaction. Your API should be able to identify the transaction via this id.
+
+The response can optionally include customer information. If provided, customer information will be stored on WhitEdge servers. This gives you the ability to filter transactions by customer on the WhiteEdge Amin Portal. The minimum required to allow filtering is to provide `id`, `email` and/or `mobile`.
 
 ```ts
 {
+  transactionId: string,
+
   // Optional
   customer: {
     id: string,
