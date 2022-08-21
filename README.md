@@ -187,7 +187,18 @@ Once the customer has finished inserting cash and wants to complete their deposi
 ```
 **2xx Response**
 
-_No response body required_
+In some cases, you may want to apply a fee on the amount inserted by the customer, which results in less credit. Or you may even credit the customer's account with a different currency. In such cases, your API can optionally return a `credited` field to indicate the exact amount received by the customer. This will then be displayed in the WhiteEdge Admin Portal. If this field is omitted, the amount credited is assumed to be the inserted amount.
+
+```ts
+{
+  // Optional
+  // An array of amount & currency credited to the customer
+  credited: {
+    currency: string,
+    amount: number,
+  }[]
+}
+```
 
 **4xx Response**
 
